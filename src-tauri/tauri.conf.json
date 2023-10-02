@@ -3,8 +3,8 @@
   "build": {
     "beforeBuildCommand": "pnpm build",
     "beforeDevCommand": "pnpm dev",
-    "devPath": "http://localhost:9000",
-    "distDir": "../dist/spa"
+    "devPath": "http://localhost:9100",
+    "distDir": "../dist/ssg"
   },
   "package": {
     "productName": "tauri-quasar",
