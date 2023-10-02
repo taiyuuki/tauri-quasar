@@ -34,7 +34,6 @@ pnpm install
 pnpm tauri:dev
 ```
 
-
 ### Lint the files
 
 ```bash
