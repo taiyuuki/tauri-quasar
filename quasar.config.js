@@ -8,7 +8,7 @@
 // Configuration for your app
 // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js
 
-const { join } = require('path')
+const { join } = require('node:path')
 const { configure } = require('quasar/wrappers')
 
 const isPro = process.env.NODE_ENV === 'production'
@@ -17,9 +17,10 @@ function resolve(dir) {
     join(__dirname, dir)
 }
 
-module.exports = configure(function (/* ctx */) {
+module.exports = configure(function(/* ctx */) {
     return {
         eslint: {
+
             // fix: true,
             // include: [],
             // exclude: [],
@@ -30,14 +31,14 @@ module.exports = configure(function (/* ctx */) {
 
         alias: {
             '@': resolve('src'),
-            src: resolve('src'),
-            components: resolve('src/components'),
-            boot: resolve('src/boot'),
-            layouts: resolve('src/layouts'),
-            pages: resolve('src/pages'),
-            router: resolve('src/router'),
-            stores: resolve('src/stores'),
-            assets: resolve('src/assets'),
+            'src': resolve('src'),
+            'components': resolve('src/components'),
+            'boot': resolve('src/boot'),
+            'layouts': resolve('src/layouts'),
+            'pages': resolve('src/pages'),
+            'router': resolve('src/router'),
+            'stores': resolve('src/stores'),
+            'assets': resolve('src/assets'),
         },
 
         // https://v2.quasar.dev/quasar-cli-vite/prefetch-feature
@@ -57,6 +58,7 @@ module.exports = configure(function (/* ctx */) {
 
         // https://github.com/quasarframework/quasar/tree/dev/extras
         extras: [
+
             // 'ionicons-v4',
             // 'mdi-v5',
             // 'fontawesome-v6',
@@ -94,6 +96,7 @@ module.exports = configure(function (/* ctx */) {
 
             extendViteConf(viteConf) {
                 viteConf.clearScreen = false
+
                 // viteConf.server = {
                 //     strictPort: true,
                 // }
@@ -106,6 +109,7 @@ module.exports = configure(function (/* ctx */) {
                     viteConf.server.hmr = { overlay: false }
                 }
             },
+
             // viteVuePluginOptions: {},
 
             vitePlugins: [
@@ -115,6 +119,7 @@ module.exports = configure(function (/* ctx */) {
                         if (route.path === '/') {
                             return route
                         }
+
                         return {
                             ...route,
                             meta: { auth: true },
@@ -127,9 +132,7 @@ module.exports = configure(function (/* ctx */) {
                 ],
                 [
                     'unplugin-vue-components/vite',
-                    {
-                        dts: 'src/components.d.ts',
-                    },
+                    { dts: 'src/components.d.ts' },
                 ],
                 [
                     'unplugin-auto-import/vite',
@@ -139,14 +142,14 @@ module.exports = configure(function (/* ctx */) {
                             'pinia',
                             'vue-router',
                             {
-                                quasar: [
+                                'quasar': [
                                     'useQuasar',
                                     'Notify',
                                     'Dialog',
                                     'LocalStorage',
                                     'useMeta',
                                 ],
-                                axios: ['AxiosInstance', ['default', 'axios']],
+                                'axios': ['AxiosInstance', ['default', 'axios']],
                                 'quasar/wrappers': ['boot'],
                             },
                         ],
@@ -159,6 +162,7 @@ module.exports = configure(function (/* ctx */) {
 
         // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#devServer
         devServer: {
+
             // https: true
             open: false, // opens browser window automatically
         },
@@ -199,6 +203,7 @@ module.exports = configure(function (/* ctx */) {
 
         // https://v2.quasar.dev/quasar-cli-vite/developing-ssr/configuring-ssr
         ssr: {
+
             // ssrPwaHtmlFilename: 'offline.html', // do NOT use index.html as name!
             // will mess up SSR
 
@@ -225,6 +230,7 @@ module.exports = configure(function (/* ctx */) {
             swFilename: 'sw.js',
             manifestFilename: 'manifest.json',
             useCredentialsForManifestTag: false,
+
             // useFilenameHashes: true,
             // extendGenerateSWOptions (cfg) {}
             // extendInjectManifestOptions (cfg) {},
@@ -234,16 +240,16 @@ module.exports = configure(function (/* ctx */) {
 
         // Full list of options: https://v2.quasar.dev/quasar-cli-vite/developing-cordova-apps/configuring-cordova
         cordova: {
+
             // noIosLegacyBuildFlag: true, // uncomment only if you know what you are doing
         },
 
         // Full list of options: https://v2.quasar.dev/quasar-cli-vite/developing-capacitor-apps/configuring-capacitor
-        capacitor: {
-            hideSplashscreen: true,
-        },
+        capacitor: { hideSplashscreen: true },
 
         // Full list of options: https://v2.quasar.dev/quasar-cli-vite/developing-electron-apps/configuring-electron
         electron: {
+
             // extendElectronMainConf (esbuildConf)
             // extendElectronPreloadConf (esbuildConf)
 
@@ -252,6 +258,7 @@ module.exports = configure(function (/* ctx */) {
             bundler: 'packager', // 'packager' or 'builder'
 
             packager: {
+
                 // https://github.com/electron-userland/electron-packager/blob/master/docs/api.md#options
 
                 // OS X / Mac App Store
@@ -265,6 +272,7 @@ module.exports = configure(function (/* ctx */) {
             },
 
             builder: {
+
                 // https://www.electron.build/configuration/configuration
 
                 appId: 'tauri-quasar',

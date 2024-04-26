@@ -14,7 +14,7 @@ routes.push({
     redirect: '/',
 })
 
-export default route(function (/* { store, ssrContext } */) {
+export default route(function(/* { store, ssrContext } */) {
     const routerMode = process.env.VUE_ROUTER_MODE === 'history' ? createWebHistory : createWebHashHistory
     const createHistory = process.env.SERVER
         ? createMemoryHistory

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import type { Todo, Meta } from './models'
+import type { Meta, Todo } from './models'
 
 interface Props {
     title: string
@@ -8,13 +8,12 @@ interface Props {
     meta: Meta
     active: boolean
 }
-const props = withDefaults(defineProps<Props>(), {
-    todos: () => [],
-})
+const props = withDefaults(defineProps<Props>(), { todos: () => [] })
 
 const clickCount = ref(0)
 function increment() {
     clickCount.value += 1
+
     return clickCount.value
 }
 

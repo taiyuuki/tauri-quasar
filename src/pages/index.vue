@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Todo, Meta } from 'components/models'
+import type { Meta, Todo } from 'components/models'
 
 const todos = ref<Todo[]>([
     {
@@ -23,9 +23,7 @@ const todos = ref<Todo[]>([
         content: 'ct5',
     },
 ])
-const meta = ref<Meta>({
-    totalCount: 1200,
-})
+const meta = ref<Meta>({ totalCount: 1200 })
 </script>
 
 <template>
