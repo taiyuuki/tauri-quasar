@@ -1,8 +1,29 @@
+diff --git a/src/vite/ssg-builder.js b/src/vite/ssg-builder.js
+index f4f5878adf6d0abbd643563eaabb42809f1e5dd8..057645d51f513d17bfd34a113f9340104bff598a 100644
+--- a/src/vite/ssg-builder.js
++++ b/src/vite/ssg-builder.js
+@@ -112,13 +112,14 @@ class SsgBuilder extends AppBuilder {
+     const htmlFile = join(clientDir, 'index.html');
+     const html = this.readFile(htmlFile);
+ 
+-    const templateFn = getProdSsrTemplateFn(html, this.quasarConf);
++    const templateFn = await getProdSsrTemplateFn(html, this.quasarConf);
+ 
+     this.writeFile('render-template.js', `module.exports=${templateFn.source}`);
++    const content = await transformProdSsgFallbackHtml(html, this.quasarConf);
+ 
+     this.writeFile(
+       `client/${this.quasarConf.ssg.fallback}`,
+-      transformProdSsgFallbackHtml(html, this.quasarConf),
++      content,
+     );
+ 
+     this.removeFile(htmlFile);
 diff --git a/src/vite/ssg-devserver.js b/src/vite/ssg-devserver.js
-index 010bf513f4d72d52b32ba7d70523117c7ece5cca..487c020dc019276c635f10c0bfb61054b716e190 100644
+index 010bf513f4d72d52b32ba7d70523117c7ece5cca..eecab1989b27e7e7cd85120a5e7e820929f10974 100644
 --- a/src/vite/ssg-devserver.js
 +++ b/src/vite/ssg-devserver.js
-@@ -158,10 +158,9 @@ class SsgDevServer extends AppDevserver {
+@@ -158,10 +158,12 @@ class SsgDevServer extends AppDevserver {
        const template = readFileSync(templatePath, 'utf-8');
        this.#renderTemplate = getDevSsrTemplateFn(template, quasarConf);
  
@@ -10,8 +31,11 @@ index 010bf513f4d72d52b32ba7d70523117c7ece5cca..487c020dc019276c635f10c0bfb61054
 -        entryPointMarkup,
 -        attachMarkup,
 -      );
-+      transformHtml(template, quasarConf).then((html) => {
-+        this.#fallbackHtml = html.replace(entryPointMarkup, attachMarkup);
++      transformHtml(template, quasarConf).then(html => {
++        this.#fallbackHtml = html.replace(
++          entryPointMarkup,
++          attachMarkup,
++        );
 +      })
      };
  
