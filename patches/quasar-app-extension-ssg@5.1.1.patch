@@ -1,0 +1,18 @@
+diff --git a/src/vite/ssg-devserver.js b/src/vite/ssg-devserver.js
+index 010bf513f4d72d52b32ba7d70523117c7ece5cca..487c020dc019276c635f10c0bfb61054b716e190 100644
+--- a/src/vite/ssg-devserver.js
++++ b/src/vite/ssg-devserver.js
+@@ -158,10 +158,9 @@ class SsgDevServer extends AppDevserver {
+       const template = readFileSync(templatePath, 'utf-8');
+       this.#renderTemplate = getDevSsrTemplateFn(template, quasarConf);
+ 
+-      this.#fallbackHtml = transformHtml(template, quasarConf).replace(
+-        entryPointMarkup,
+-        attachMarkup,
+-      );
++      transformHtml(template, quasarConf).then((html) => {
++        this.#fallbackHtml = html.replace(entryPointMarkup, attachMarkup);
++      })
+     };
+ 
+     updateTemplate();
