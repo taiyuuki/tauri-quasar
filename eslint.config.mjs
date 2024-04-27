@@ -21,4 +21,11 @@ export default tyk({
             ],
         }],
     },
+}, {
+    files: ['quasar.config.js'],
+    rules: {
+        '@typescript-eslint/no-var-requires': 'off',
+        'no-undef': 'off',
+        '@stylistic/object-curly-newline': 'off',
+    },
 })
