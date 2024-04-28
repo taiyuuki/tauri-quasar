@@ -1,57 +1,55 @@
 {
   "name": "tauri-quasar",
   "version": "0.0.1",
-  "description": "tauri quasar starter template",
-  "productName": "Tauri Quasar",
+  "description": "A Quasar Project",
+  "productName": "Quasar App",
   "author": "taiyuuki <taiyuuki@qq.com>",
+  "type": "module",
   "private": true,
   "scripts": {
-    "lint": "eslint --fix",
-    "dev": "quasar ssg dev",
-    "build": "quasar ssg generate",
+    "lint": "eslint src/** --fix",
+    "dev": "quasar dev",
+    "build": "quasar build",
     "tauri:dev": "tauri dev",
-    "tauri:build": "tauri build",
-    "serve:ssg": "quasar ssg serve dist/ssg"
+    "tauri:build": "tauri build"
   },
   "dependencies": {
-    "@quasar/extras": "^1.16.11",
-    "pinia": "^2.1.7",
-    "quasar": "^2.15.4",
-    "vue": "^3.4.25",
-    "vue-router": "^4.3.2"
+    "@quasar/extras": "^1.16.4",
+    "@tauri-apps/api": ">=2.0.0-beta.0",
+    "@tauri-apps/plugin-shell": ">=2.0.0-beta.0",
+    "pinia": "^2.0.11",
+    "quasar": "^2.6.0",
+    "vue": "^3.4.18",
+    "vue-router": "^4.0.12"
   },
   "devDependencies": {
-    "@quasar/app-vite": "^1.8.4",
-    "@taiyuuki/eslint-config": "^1.4.1",
-    "@tauri-apps/api": "^1.5.4",
-    "@tauri-apps/cli": "^1.5.12",
-    "@types/node": "^20.12.7",
-    "@typescript-eslint/eslint-plugin": "^5.62.0",
-    "@typescript-eslint/parser": "^5.62.0",
-    "@unocss/preset-attributify": "^0.51.13",
-    "@unocss/preset-icons": "^0.51.13",
-    "@unocss/preset-uno": "^0.51.13",
-    "autoprefixer": "^10.4.19",
+    "@quasar/app-vite": ">=2.0.0-beta.5",
+    "@taiyuuki/eslint-config": "^1.4.4",
+    "@tauri-apps/cli": ">=2.0.0-beta.0",
+    "@types/node": "^20.5.9",
+    "@unocss/preset-attributify": "^0.59.4",
+    "@unocss/preset-icons": "^0.59.4",
+    "@unocss/preset-uno": "^0.59.4",
+    "autoprefixer": "^10.4.2",
     "eslint": "^9.1.1",
-    "eslint-plugin-promise": "^6.1.1",
-    "postcss": "^8.4.38",
-    "quasar-app-extension-ssg": "^5.1.1",
-    "typescript": "^4.9.5",
-    "unocss": "^0.51.13",
-    "unplugin-auto-import": "^0.16.7",
-    "unplugin-vue-components": "^0.24.1",
-    "vite": "^5.2.10",
-    "vite-plugin-pages": "^0.29.1",
-    "vite-plugin-vue-layouts": "^0.8.0"
+    "internal-ip": "^8.0.0",
+    "typescript": "~5.3.0",
+    "unocss": "^0.59.4",
+    "unplugin-auto-import": "^0.17.5",
+    "unplugin-vue-components": "^0.26.0",
+    "vite-plugin-pages": "^0.32.1",
+    "vite-plugin-vue-layouts": "^0.11.0"
   },
   "engines": {
-    "node": "^18 || ^16 || ^14.19",
+    "node": "^24 || ^22 || ^20 || ^18",
     "npm": ">= 6.13.4",
     "yarn": ">= 1.21.1"
   },
   "pnpm": {
-    "patchedDependencies": {
-      "quasar-app-extension-ssg@5.1.1": "patches/quasar-app-extension-ssg@5.1.1.patch"
+    "peerDependencyRules": {
+      "allowedVersions": {
+        "eslint": "9"
+      }
     }
   }
 }

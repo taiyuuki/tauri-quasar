@@ -9,7 +9,7 @@ import type { Router } from 'vue-router'
  */
 declare module 'pinia' {
     export interface PiniaCustomProperties {
-        readonly router: Router
+        readonly router: Router;
     }
 }
 
@@ -22,21 +22,11 @@ declare module 'pinia' {
  * with the Store instance.
  */
 
-export default store(() => {
+export default store((/* { ssrContext } */) => {
     const pinia = createPinia()
 
     // You can add Pinia plugins here
     // pinia.use(SomePiniaPlugin)
-    //   const cookies = process.env.SERVER ? Cookies.parseSSR(ssrContext) : Cookies
-    //   pinia.use(
-    //     cretaeCookiePersisted(cookies, {
-    //       cookiesOptions: {
-    //         expires: 15,
-    //         sameSite: 'Strict',
-    //       },
-    //     })
-    //   )
-    //   pinia.use(createLSPersisted(LocalStorage))
 
     return pinia
 })

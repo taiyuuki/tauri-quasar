@@ -1,5 +1,3 @@
-
-
 #  tauri-quasar
 
 Tauri  + Quasar CLI (Vite) starter template.
@@ -47,16 +45,6 @@ Change the bundle identifier in `tauri.conf.json > tauri > bundle > identifier`,
 ```bash
 pnpm tauri:build
 ```
-
-### Build Error
-
-The following errors may occur during the build: 
-
-```bash
-[vite:resolve] Missing "./preload-helper" export in "vite" package
-```
-
-Opens the file that reported the error(`\node_modules\vite\dist\node\chunks\dep-[hash].js`), find the `vite/preload-helper`, modify to `\0vite/preload-helper`, save and run `pnpm tauri:build` again.
 
 ## Customize the configuration
 

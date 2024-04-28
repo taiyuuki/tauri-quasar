@@ -1,33 +1,31 @@
 /* eslint-env node */
 
-/*
- * This file runs in a Node context (it's NOT transpiled by Babel), so use only
- * the ES6 features that are supported by your Node version. https://node.green/
- */
-
 // Configuration for your app
 // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js
 
-const { join } = require('node:path')
-const { configure } = require('quasar/wrappers')
+import { join } from 'node:path'
+import type { RouteRecord } from 'vue-router'
+import type { UserConfig } from 'vite'
+import { configure } from 'quasar/wrappers'
+import { internalIpV4 } from 'internal-ip'
 
-const isPro = process.env.NODE_ENV === 'production'
+interface ViteConf extends UserConfig {
+    minify: boolean | 'esbuild'
+    sourcemap: boolean
+}
 
-function resolve(dir) {
+function resolve(dir: string) {
     join(__dirname, dir)
 }
 
-module.exports = configure(function(/* ctx */) {
-    return {
-        eslint: {
+// const isPro = process.env.NODE_ENV === 'production'
+const mobile = process.env.TAURI_ENV_PLATFORM && !!/android|ios/.exec(process.env.TAURI_ENV_PLATFORM)
 
-            // fix: true,
-            // include: [],
-            // exclude: [],
-            // rawOptions: {},
-            warnings: true,
-            errors: true,
-        },
+export default configure((/* ctx */) => {
+    return {
+
+        // https://v2.quasar.dev/quasar-cli-vite/prefetch-feature
+        // preFetch: true,
 
         alias: {
             '@': resolve('src'),
@@ -40,9 +38,6 @@ module.exports = configure(function(/* ctx */) {
             'stores': resolve('src/stores'),
             'assets': resolve('src/assets'),
         },
-
-        // https://v2.quasar.dev/quasar-cli-vite/prefetch-feature
-        // preFetch: true,
 
         // app boot file (/src/boot)
         // --> boot files are part of "main.js"
@@ -60,7 +55,7 @@ module.exports = configure(function(/* ctx */) {
         extras: [
 
             // 'ionicons-v4',
-            // 'mdi-v5',
+            // 'mdi-v7',
             // 'fontawesome-v6',
             // 'eva-icons',
             // 'themify',
@@ -74,8 +69,8 @@ module.exports = configure(function(/* ctx */) {
         // Full list of options: https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#build
         build: {
             target: {
-                browser: ['es2019', 'edge88', 'firefox78', 'chrome87', 'safari13.1'],
-                node: 'node16',
+                browser: ['es2022', 'firefox115', 'chrome115', 'safari14'],
+                node: 'node20',
             },
 
             vueRouterMode: 'hash', // available values: 'hash', 'history'
@@ -94,28 +89,47 @@ module.exports = configure(function(/* ctx */) {
             // polyfillModulePreload: true,
             // distDir
 
-            extendViteConf(viteConf) {
+            async extendViteConf(viteConf: UserConfig) {
                 viteConf.clearScreen = false
 
                 // viteConf.server = {
                 //     strictPort: true,
                 // }
                 viteConf.envPrefix = ['VITE_', 'TAURI_']
-                viteConf.build.target = process.env.TAURI_PLATFORM === 'windows' ? 'chrome105' : 'safari13'
-                viteConf.minify = process.env.TAURI_DEBUG ? false : 'esbuild'
-                viteConf.sourcemap = !!process.env.TAURI_DEBUG
 
-                if (!isPro) {
-                    viteConf.server.hmr = { overlay: false }
+                viteConf.build.target = process.env.TAURI_PLATFORM === 'windows' ? 'chrome105' : 'safari13';
+                (<ViteConf>viteConf).minify = process.env.TAURI_DEBUG ? false : 'esbuild';
+                (<ViteConf>viteConf).sourcemap = !!process.env.TAURI_DEBUG
+
+                viteConf.server = {
+                    port: 1420,
+                    strictPort: true,
+                    host: mobile ? '0.0.0.0' : false,
+                    open: false,
+                    hmr: mobile
+                        ? {
+                            protocol: 'ws',
+                            host: await internalIpV4(),
+                            port: 1421,
+                            overlay: false,
+                        }
+                        : {
+                            overlay: false,
+                        },
+                    watch: {
+
+                        // 3. tell vite to ignore watching `src-tauri`
+                        ignored: ['**/src-tauri/**'],
+                    },
                 }
             },
 
             // viteVuePluginOptions: {},
-
+      
             vitePlugins: [
                 ['vite-plugin-pages', {
                     extensions: ['vue'],
-                    extendRoute(route) {
+                    extendRoute(route: RouteRecord) {
                         if (route.path === '/') {
                             return route
                         }
@@ -164,7 +178,8 @@ module.exports = configure(function(/* ctx */) {
         devServer: {
 
             // https: true
-            open: false, // opens browser window automatically
+            open: true, // opens browser window automatically
+            port: mobile ? 1421 : 1420,
         },
 
         // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#framework
@@ -194,48 +209,51 @@ module.exports = configure(function(/* ctx */) {
         //   rootComponent: 'src/App.vue',
         //   router: 'src/router/index',
         //   store: 'src/store/index',
-        //   registerServiceWorker: 'src-pwa/register-service-worker',
-        //   serviceWorker: 'src-pwa/custom-service-worker',
+        //   pwaRegisterServiceWorker: 'src-pwa/register-service-worker',
+        //   pwaServiceWorker: 'src-pwa/custom-service-worker',
         //   pwaManifestFile: 'src-pwa/manifest.json',
         //   electronMain: 'src-electron/electron-main',
         //   electronPreload: 'src-electron/electron-preload'
+        //   bexManifestFile: 'src-bex/manifest.json
         // },
 
         // https://v2.quasar.dev/quasar-cli-vite/developing-ssr/configuring-ssr
         ssr: {
-
-            // ssrPwaHtmlFilename: 'offline.html', // do NOT use index.html as name!
-            // will mess up SSR
-
-            // extendSSRWebserverConf (esbuildConf) {},
-            // extendPackageJson (json) {},
-
-            pwa: false,
-
-            // manualStoreHydration: true,
-            // manualPostHydrationTrigger: true,
-
             prodPort: 3000, // The default port that the production server should use
             // (gets superseded if process.env.PORT is specified at runtime)
 
             middlewares: [
                 'render', // keep this as last one
             ],
+
+            // extendPackageJson (json) {},
+            // extendSSRWebserverConf (esbuildConf) {},
+
+            // manualStoreSerialization: true,
+            // manualStoreSsrContextInjection: true,
+            // manualStoreHydration: true,
+            // manualPostHydrationTrigger: true,
+
+            pwa: false,
+
+            // pwaOfflineHtmlFilename: 'offline.html', // do NOT use index.html as name!
+            // will mess up SSR
+
+            // pwaExtendGenerateSWOptions (cfg) {},
+            // pwaExtendInjectManifestOptions (cfg) {}
         },
 
         // https://v2.quasar.dev/quasar-cli-vite/developing-pwa/configuring-pwa
         pwa: {
-            workboxMode: 'generateSW', // or 'injectManifest'
-            injectPwaMetaTags: true,
-            swFilename: 'sw.js',
-            manifestFilename: 'manifest.json',
-            useCredentialsForManifestTag: false,
-
-            // useFilenameHashes: true,
-            // extendGenerateSWOptions (cfg) {}
-            // extendInjectManifestOptions (cfg) {},
-            // extendManifestJson (json) {}
-            // extendPWACustomSWConf (esbuildConf) {}
+            workboxMode: 'GenerateSW', // 'GenerateSW' or 'InjectManifest'
+            // swFilename: 'sw.js',
+            // manifestFilename: 'manifest.json'
+            // extendManifestJson (json) {},
+            // useCredentialsForManifestTag: true,
+            // injectPwaMetaTags: false,
+            // extendPWACustomSWConf (esbuildConf) {},
+            // extendGenerateSWOptions (cfg) {},
+            // extendInjectManifestOptions (cfg) {}
         },
 
         // Full list of options: https://v2.quasar.dev/quasar-cli-vite/developing-cordova-apps/configuring-cordova
@@ -245,14 +263,22 @@ module.exports = configure(function(/* ctx */) {
         },
 
         // Full list of options: https://v2.quasar.dev/quasar-cli-vite/developing-capacitor-apps/configuring-capacitor
-        capacitor: { hideSplashscreen: true },
+        capacitor: {
+            hideSplashscreen: true,
+        },
 
         // Full list of options: https://v2.quasar.dev/quasar-cli-vite/developing-electron-apps/configuring-electron
         electron: {
 
-            // extendElectronMainConf (esbuildConf)
-            // extendElectronPreloadConf (esbuildConf)
+            // extendElectronMainConf (esbuildConf) {},
+            // extendElectronPreloadConf (esbuildConf) {},
 
+            // extendPackageJson (json) {},
+
+            // Electron preload scripts (if any) from /src-electron, WITHOUT file extension
+            preloadScripts: ['electron-preload'],
+
+            // specify the debugging port to use for the Electron app when running in development mode
             inspectPort: 5858,
 
             bundler: 'packager', // 'packager' or 'builder'
@@ -281,12 +307,13 @@ module.exports = configure(function(/* ctx */) {
 
         // Full list of options: https://v2.quasar.dev/quasar-cli-vite/developing-browser-extensions/configuring-bex
         bex: {
+
+            // extendBexScriptsConf (esbuildConf) {},
+            // extendBexManifestJson (json) {},
+
             contentScripts: [
                 'my-content-script',
             ],
-
-            // extendBexScriptsConf (esbuildConf) {}
-            // extendBexManifestJson (json) {}
         },
     }
 })

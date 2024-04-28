@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
-import type { Meta, Todo } from './models'
+import { Meta, Todo } from './models'
 
 interface Props {
-    title: string
-    todos?: Todo[]
-    meta: Meta
-    active: boolean
+    title: string;
+    todos?: Todo[];
+    meta: Meta;
+    active: boolean;
 }
+
 const props = withDefaults(defineProps<Props>(), { todos: () => [] })
 
 const clickCount = ref(0)
