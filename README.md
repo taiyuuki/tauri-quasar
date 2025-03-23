@@ -45,9 +45,10 @@ Change the bundle identifier in `tauri.conf.json > tauri > bundle > identifier`,
 ```bash
 pnpm tauri:build
 ```
+## result
+![img.png](img.png)
 
 ## Customize the configuration
-
 https://vitejs.dev/
 
 https://vuejs.org/
