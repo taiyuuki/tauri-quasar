@@ -20,6 +20,8 @@ Tauri  + Quasar CLI (Vite) starter template.
 
 ## Quick start
 
+Note: Need to **Rust edition 2024 Release** or later.
+
 ### Install the dependencies
 
 ```bash
@@ -45,6 +47,9 @@ Change the bundle identifier in `tauri.conf.json > tauri > bundle > identifier`,
 ```bash
 pnpm tauri:build
 ```
+## Preview
+
+![preview.png](preview.png)
 
 ## Customize the configuration
 
