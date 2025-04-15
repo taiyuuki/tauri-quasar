@@ -28,6 +28,28 @@ const meta = ref<Meta>({ totalCount: 1200 })
 
 <template>
   <q-page class="row items-center justify-evenly">
+    <div>
+      <a
+        href="https://tauri.app/"
+        target="_blank"
+      >
+        <img
+          src="icons/tauri-128x128.png"
+          alt="Tauri Logo"
+          class="logo"
+        >
+      </a>
+      <a
+        href="https://quasar.dev/"
+        target="_blank"
+      >
+        <img
+          src="icons/favicon-128x128.png"
+          alt="Quasar logo"
+          class="logo"
+        >
+      </a>
+    </div>
     <example-component
       title="Example component"
       active
@@ -36,3 +58,18 @@ const meta = ref<Meta>({ totalCount: 1200 })
     />
   </q-page>
 </template>
+
+<style scoped>
+.logo {
+  height: 10em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.vue:hover {
+  filter: drop-shadow(0 0 2em #42b883aa);
+}
+</style>
