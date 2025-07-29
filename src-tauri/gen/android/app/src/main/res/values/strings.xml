@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">tauri-quasar</string>
+    <string name="main_activity_title">tauri-quasar</string>
+</resources>

@@ -10,8 +10,8 @@ import { configure } from 'quasar/wrappers'
 import { internalIpV4 } from 'internal-ip'
 
 interface ViteConf extends UserConfig {
-    minify: boolean | 'esbuild'
-    sourcemap: boolean
+    minify: boolean | 'esbuild';
+    sourcemap: boolean;
 }
 
 function resolve(dir: string) {
@@ -19,7 +19,9 @@ function resolve(dir: string) {
 }
 
 // const isPro = process.env.NODE_ENV === 'production'
-const mobile = process.env.TAURI_ENV_PLATFORM && !!/android|ios/.exec(process.env.TAURI_ENV_PLATFORM)
+const mobile
+  = process.env.TAURI_ENV_PLATFORM
+      && !!/android|ios/.exec(process.env.TAURI_ENV_PLATFORM)
 
 export default configure((/* ctx */) => {
     return {
@@ -43,14 +45,10 @@ export default configure((/* ctx */) => {
         // app boot file (/src/boot)
         // --> boot files are part of "main.js"
         // https://v2.quasar.dev/quasar-cli-vite/boot-files
-        boot: [
-            'unocss',
-        ],
+        boot: ['unocss'],
 
         // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#css
-        css: [
-            'app.scss',
-        ],
+        css: ['app.scss'],
 
         // https://github.com/quasarframework/quasar/tree/dev/extras
         extras: [
@@ -101,8 +99,11 @@ export default configure((/* ctx */) => {
                     viteConf.build = {}
                 }
 
-                viteConf.build.target = process.env.TAURI_PLATFORM === 'windows' ? 'chrome105' : 'safari13';
-                (<ViteConf>viteConf).minify = process.env.TAURI_DEBUG ? false : 'esbuild';
+                viteConf.build.target
+          = process.env.TAURI_PLATFORM === 'windows' ? 'chrome105' : 'safari13';
+                (<ViteConf>viteConf).minify = process.env.TAURI_DEBUG
+                    ? false
+                    : 'esbuild';
                 (<ViteConf>viteConf).sourcemap = !!process.env.TAURI_DEBUG
 
                 viteConf.server = {
@@ -129,29 +130,26 @@ export default configure((/* ctx */) => {
             },
 
             // viteVuePluginOptions: {},
-      
-            vitePlugins: [
-                ['vite-plugin-pages', {
-                    extensions: ['vue'],
-                    extendRoute(route: RouteRecord) {
-                        if (route.path === '/') {
-                            return route
-                        }
 
-                        return {
-                            ...route,
-                            meta: { auth: true },
-                        }
+            vitePlugins: [
+                [
+                    'vite-plugin-pages',
+                    {
+                        extensions: ['vue'],
+                        extendRoute(route: RouteRecord) {
+                            if (route.path === '/') {
+                                return route
+                            }
+
+                            return {
+                                ...route,
+                                meta: { auth: true },
+                            }
+                        },
                     },
-                }],
-                [
-                    'vite-plugin-vue-layouts',
-                    { defaultLayout: 'MainLayout' },
                 ],
-                [
-                    'unplugin-vue-components/vite',
-                    { dts: 'src/components.d.ts' },
-                ],
+                ['vite-plugin-vue-layouts', { defaultLayout: 'MainLayout' }],
+                ['unplugin-vue-components/vite', { dts: 'src/components.d.ts' }],
                 [
                     'unplugin-auto-import/vite',
                     {
@@ -174,7 +172,13 @@ export default configure((/* ctx */) => {
                         dts: 'src/auto-imports.d.ts',
                     },
                 ],
-                ['unocss/vite', {/** unocss options */ }],
+                [
+                    'unocss/vite',
+                    {
+
+                        /** unocss options */
+                    },
+                ],
             ],
         },
 
@@ -290,13 +294,11 @@ export default configure((/* ctx */) => {
             packager: {
 
                 // https://github.com/electron-userland/electron-packager/blob/master/docs/api.md#options
-
                 // OS X / Mac App Store
                 // appBundleId: '',
                 // appCategoryType: '',
                 // osxSign: '',
                 // protocol: 'myapp://path',
-
                 // Windows only
                 // win32metadata: { ... }
             },
@@ -315,9 +317,7 @@ export default configure((/* ctx */) => {
             // extendBexScriptsConf (esbuildConf) {},
             // extendBexManifestJson (json) {},
 
-            contentScripts: [
-                'my-content-script',
-            ],
+            contentScripts: ['my-content-script'],
         },
     }
 })
